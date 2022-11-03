@@ -1,5 +1,5 @@
-import React from 'react';
 import { HomeOutlined, MessageOutlined, NotificationOutlined } from '@ant-design/icons';
+import React from 'react';
 import { redirect } from 'react-router-dom';
 import {
   BaseLayout,
@@ -9,9 +9,13 @@ import {
   Posts,
   Register,
 } from './pages';
+import { memory } from './service';
 
-// import { memory, storage } from '../js/utils';
-// import { getCsrfCookie } from '../js/api';
+const isLogin = () => {
+  const user = memory?.user;
+
+  return user && Object.keys(user).length !== 0;
+};
 
 export const menuComponents = [
   {
@@ -36,8 +40,6 @@ export const menuComponents = [
     icon: <NotificationOutlined />,
   },
 ];
-
-const isLogin = () => true;
 
 export const routes = [
   {
