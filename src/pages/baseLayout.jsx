@@ -6,7 +6,7 @@ import React from 'react';
 import { Link, Outlet, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import logo from '../images/logo.png';
-import { memory } from '../service';
+import { storage } from '../service';
 
 const {
   Content, Header, Sider,
@@ -50,7 +50,7 @@ export default function BaseLayout({ menuComponents }) {
       icon: <ExclamationCircleOutlined />,
       content: '確定退出嗎?',
       onOk() {
-        memory.user = {};
+        storage.reset('user');
         navigate('/login');
       },
     });

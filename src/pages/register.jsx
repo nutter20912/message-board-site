@@ -1,5 +1,123 @@
-import React from 'react';
+import {
+  CheckOutlined, KeyOutlined, MailOutlined, UserOutlined,
+} from '@ant-design/icons';
+import {
+  Form, Input, message, Modal,
+} from 'antd';
+import React, { useState } from 'react';
+import { userRegister } from '../api';
 
-export default function Register() {
-  return (<div>Register</div>);
+export default function Register({ setModalOpen, modalOpen }) {
+  const [form] = Form.useForm();
+  const [confirmLoading, setConfirmLoading] = useState(false);
+
+  const handleCancel = () => {
+    form.resetFields();
+    setModalOpen(false);
+  };
+
+  const successMessage = (email) => {
+    Modal.success({
+      content: `${email} register success.`,
+    });
+  };
+
+  const handleOk = async () => {
+    setConfirmLoading(true);
+
+    try {
+      const { name, email, password } = form.getFieldsValue(true);
+      const { result: user } = await userRegister({ name, email, password });
+
+      setModalOpen(false);
+      successMessage(user.email);
+    } catch ({ response: { data } }) {
+      message.error(data.message);
+    } finally {
+      setConfirmLoading(false);
+    }
+  };
+
+  return (
+    <Modal
+      title="建立你的帳戶"
+      open={modalOpen}
+      onOk={handleOk}
+      confirmLoading={confirmLoading}
+      onCancel={handleCancel}
+    >
+
+      <Form
+        id="register"
+        form={form}
+      >
+
+        <Form.Item
+          name="name"
+          rules={[
+            {
+              required: true,
+              message: 'Please input your nickname!',
+            },
+          ]}
+        >
+          <Input prefix={<UserOutlined />} placeholder="Name" />
+        </Form.Item>
+
+        <Form.Item
+          name="email"
+          rules={[
+            {
+              required: true,
+              message: 'Please input your Email!',
+            },
+            {
+              pattern: /^[\w-\\.]+@([\w-]+\.)+[\w-]{2,4}$/,
+              message: 'not a email',
+            },
+          ]}
+        >
+          <Input prefix={<MailOutlined />} placeholder="Email" />
+        </Form.Item>
+
+        <Form.Item
+          name="password"
+          rules={[
+            {
+              required: true,
+              message: 'Please input your password!',
+            },
+            {
+              max: 8,
+              message: 'max lengh 8 ',
+            },
+          ]}
+        >
+          <Input.Password prefix={<KeyOutlined />} placeholder="Password" />
+        </Form.Item>
+
+        <Form.Item
+          name="confirm"
+          dependencies={['password']}
+          hasFeedback
+          rules={[
+            {
+              required: true,
+              message: 'Please confirm your password!',
+            },
+            ({ getFieldValue }) => ({
+              validator: async (_, value) => {
+                if (getFieldValue('password') !== value) {
+                  throw new Error('The two passwords that you entered do not match!');
+                }
+              },
+            }),
+          ]}
+        >
+          <Input.Password prefix={<CheckOutlined />} placeholder="Confirm Password" />
+        </Form.Item>
+
+      </Form>
+    </Modal>
+  );
 }

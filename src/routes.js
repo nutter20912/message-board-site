@@ -9,10 +9,10 @@ import {
   Posts,
   Register,
 } from './pages';
-import { memory } from './service';
+import { storage } from './service';
 
 const isLogin = () => {
-  const user = memory?.user;
+  const user = storage.get('user');
 
   return user && Object.keys(user).length !== 0;
 };

@@ -1,12 +1,15 @@
+import { KeyOutlined, MailOutlined } from '@ant-design/icons';
 import {
   Button, Form, Input, message,
 } from 'antd';
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import * as api from '../api';
 import background from '../images/background.jpeg';
 import logo from '../images/logo.png';
-import { memory } from '../service';
+import { storage } from '../service';
+import Register from './register';
 
 const LoginPage = styled.div`
   width: 100%;
@@ -47,16 +50,27 @@ const ContentTitle = styled.h2`
  * @returns {React.ReactElement}
  */
 export default function Login() {
+  const [modalOpen, setModalOpen] = useState(false);
   const [form] = Form.useForm();
   const navigate = useNavigate();
 
   const onFinish = async () => {
-    const user = 'user';
+    const { email, password } = form.getFieldsValue(true);
 
-    memory.user = user;
+    try {
+      const { result: user } = await api.userLogin({ email, password });
 
-    message.success('登入成功');
-    navigate('/');
+      storage.set('user', user);
+      message.success('登入成功');
+      navigate('/');
+    } catch ({ response: { data } }) {
+      message.error(data.message);
+    }
+  };
+
+  const showModal = () => {
+    form.resetFields();
+    setModalOpen(true);
   };
 
   return (
@@ -72,33 +86,57 @@ export default function Login() {
           onFinish={onFinish}
         >
           <Form.Item
-            label="Email"
             name="email"
             rules={[
-              { required: true, message: 'Please input your Email!' },
-              { pattern: /^[\w-\\.]+@([\w-]+\.)+[\w-]{2,4}$/, message: 'not a email' },
+              {
+                required: true,
+                message: 'Please input your Email!',
+              },
+              {
+                pattern: /^[\w-\\.]+@([\w-]+\.)+[\w-]{2,4}$/,
+                message: 'not a email',
+              },
             ]}
           >
-            <Input />
+            <Input prefix={<MailOutlined />} placeholder="Email" />
           </Form.Item>
 
           <Form.Item
-            label="Password"
             name="password"
             rules={[
-              { required: true, message: 'Please input your password!' },
-              { max: 8, message: 'max lengh 8 ' },
+              {
+                required: true,
+                message: 'Please input your password!',
+              },
+              {
+                max: 8,
+                message: 'max lengh 8 ',
+              },
             ]}
           >
-            <Input.Password />
+            <Input.Password prefix={<KeyOutlined />} placeholder="Password" />
           </Form.Item>
 
           <Form.Item>
-            <Button type="primary" htmlType="submit" block>
+            <Button type="primary" htmlType="submit" shape="round" block>
               login in
             </Button>
           </Form.Item>
+
         </Form>
+        <Button
+          type="primary"
+          shape="round"
+          style={{ backgroundColor: 'forestgreen' }}
+          onClick={showModal}
+          block
+        >
+          register
+        </Button>
+        <Register
+          setModalOpen={setModalOpen}
+          modalOpen={modalOpen}
+        />
       </Content>
     </LoginPage>
   );
