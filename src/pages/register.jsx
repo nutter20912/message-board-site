@@ -1,9 +1,5 @@
-import {
-  CheckOutlined, KeyOutlined, MailOutlined, UserOutlined,
-} from '@ant-design/icons';
-import {
-  Form, Input, message, Modal,
-} from 'antd';
+import { CheckOutlined, KeyOutlined, MailOutlined, UserOutlined } from '@ant-design/icons';
+import { Form, Input, message, Modal } from 'antd';
 import React, { useState } from 'react';
 import { userRegister } from '../api';
 

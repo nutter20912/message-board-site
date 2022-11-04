@@ -1,16 +1,12 @@
 import { ExclamationCircleOutlined, LogoutOutlined } from '@ant-design/icons';
-import {
-  Avatar, Button, Layout, Menu, Modal,
-} from 'antd';
+import { Avatar, Button, Layout, Menu, Modal } from 'antd';
 import React from 'react';
 import { Link, Outlet, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import logo from '../images/logo.png';
 import { storage } from '../service';
 
-const {
-  Content, Header, Sider,
-} = Layout;
+const { Content, Header, Sider } = Layout;
 
 const HeaderStyle = styled(Header)`
   text-align: right;
@@ -76,7 +72,7 @@ export default function BaseLayout({ menuComponents }) {
       <Layout>
 
         <HeaderStyle>
-          <HeaderText>welcome</HeaderText>
+          <HeaderText>{`welcome, ${storage.get('user')?.name}`}</HeaderText>
           <Button
             icon={<LogoutOutlined />}
             type="link"

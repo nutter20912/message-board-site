@@ -1,14 +1,7 @@
 import { HomeOutlined, MessageOutlined, NotificationOutlined } from '@ant-design/icons';
 import React from 'react';
 import { redirect } from 'react-router-dom';
-import {
-  BaseLayout,
-  Login,
-  Messages,
-  Notifications,
-  Posts,
-  Register,
-} from './pages';
+import { BaseLayout, Login, Messages, Notifications, Posts, Register } from './pages';
 import { storage } from './service';
 
 const isLogin = () => {

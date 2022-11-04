@@ -1,7 +1,5 @@
 import { KeyOutlined, MailOutlined } from '@ant-design/icons';
-import {
-  Button, Form, Input, message,
-} from 'antd';
+import { Button, Form, Input, message } from 'antd';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
