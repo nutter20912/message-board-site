@@ -2,7 +2,7 @@ import { HomeOutlined, MessageOutlined, NotificationOutlined } from '@ant-design
 import React from 'react';
 import { redirect } from 'react-router-dom';
 import { BaseLayout, Login, Messages, Notifications, Posts, Register } from './pages';
-import { storage } from './service';
+import { storage } from './lib';
 
 const isLogin = () => {
   const user = storage.get('user');

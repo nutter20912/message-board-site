@@ -1,4 +1,4 @@
-import request from '../service/request';
+import { request } from '../lib';
 
 export const getCsrfCookie = () => request('get', '/api/auth/csrf-cookie');
 

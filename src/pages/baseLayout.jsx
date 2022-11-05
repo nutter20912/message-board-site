@@ -4,7 +4,7 @@ import React from 'react';
 import { Link, Outlet, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import logo from '../images/logo.png';
-import { storage } from '../service';
+import { storage } from '../lib';
 
 const { Content, Header, Sider } = Layout;
 

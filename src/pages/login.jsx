@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import * as api from '../api';
 import background from '../images/background.jpeg';
 import logo from '../images/logo.png';
-import { storage } from '../service';
+import { storage } from '../lib';
 import Register from './register';
 
 const LoginPage = styled.div`
