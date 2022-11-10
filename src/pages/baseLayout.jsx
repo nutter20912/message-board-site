@@ -8,13 +8,17 @@ import { storage } from '../lib';
 
 const { Content, Header, Sider } = Layout;
 
-const HeaderStyle = styled(Header)`
+const TopHeader = styled(Header)`
+  z-index: 2;
+  position: sticky;
+  top: 0;
   text-align: right;
-  border-bottom: 1px solid #1da57a;
-  height: 50px;
-  line-height: 50px;
+  width: 100%;
+  height: 70px;
+  line-height: center;
+  background: white;
+  border-bottom: solid LightGray;
   padding: 0;
-  background: #fff;
 `;
 const HeaderText = styled.span`
   margin-right: 10px;
@@ -23,6 +27,15 @@ const MenuLogo = styled(Avatar)`
   src: ${(props) => props.src};
   height: 32px;
   margin: 16px;
+`;
+const LeftSider = styled(Sider)`
+  z-index: 10;
+  position: sticky;
+  bottom: 0;
+  overflow: auto;
+  background: white;
+  left: 0;
+  border-right: 3px LightGray solid;
 `;
 
 /**
@@ -55,23 +68,14 @@ export default function BaseLayout({ menuComponents }) {
   return (
     <Layout style={{ minHeight: '100vh' }}>
 
-      <Sider
-        style={{
-          overflow: 'auto',
-          height: '100vh',
-          position: 'fixed',
-          left: 0,
-          top: 0,
-          bottom: 0,
-        }}
-      >
+      <LeftSider>
         <MenuLogo src={logo} size="large" />
-        <Menu items={items} theme="dark" mode="inline" />
-      </Sider>
+        <Menu items={items} />
+      </LeftSider>
 
       <Layout>
 
-        <HeaderStyle>
+        <TopHeader>
           <HeaderText>{`welcome, ${storage.get('user')?.name}`}</HeaderText>
           <Button
             icon={<LogoutOutlined />}
@@ -79,9 +83,9 @@ export default function BaseLayout({ menuComponents }) {
             size="large"
             onClick={onLogout}
           />
-        </HeaderStyle>
+        </TopHeader>
 
-        <Content>
+        <Content style={{ width: '70%' }}>
           <Outlet />
         </Content>
 

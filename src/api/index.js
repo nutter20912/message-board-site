@@ -1,5 +1,7 @@
 import { request } from '../lib';
 
+export { default as Post } from './Post';
+
 export const getCsrfCookie = () => request('get', '/api/auth/csrf-cookie');
 
 export const userLogin = ({ email, password }) => request('post', 'api/auth/login', {
