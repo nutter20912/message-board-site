@@ -1,8 +1,13 @@
 import { CheckOutlined, KeyOutlined, MailOutlined, UserOutlined } from '@ant-design/icons';
-import { Form, Input, message, Modal } from 'antd';
+import { Button, Form, Input, message, Modal } from 'antd';
 import React, { useState } from 'react';
 import { userRegister } from '../api';
 
+/**
+ * 註冊元件
+ *
+ * @returns {React.ReactElement}
+ */
 export default function Register({ setModalOpen, modalOpen }) {
   const [form] = Form.useForm();
   const [confirmLoading, setConfirmLoading] = useState(false);
@@ -12,13 +17,7 @@ export default function Register({ setModalOpen, modalOpen }) {
     setModalOpen(false);
   };
 
-  const successMessage = (email) => {
-    Modal.success({
-      content: `${email} register success.`,
-    });
-  };
-
-  const handleOk = async () => {
+  const onFinish = async () => {
     setConfirmLoading(true);
 
     try {
@@ -26,7 +25,8 @@ export default function Register({ setModalOpen, modalOpen }) {
       const { result: user } = await userRegister({ name, email, password });
 
       setModalOpen(false);
-      successMessage(user.email);
+      form.resetFields();
+      Modal.success({ content: `${user.email} register success.` });
     } catch ({ response: { data } }) {
       message.error(data.message);
     } finally {
@@ -38,14 +38,15 @@ export default function Register({ setModalOpen, modalOpen }) {
     <Modal
       title="建立你的帳戶"
       open={modalOpen}
-      onOk={handleOk}
       confirmLoading={confirmLoading}
       onCancel={handleCancel}
+      footer={null}
     >
 
       <Form
         id="register"
         form={form}
+        onFinish={onFinish}
       >
 
         <Form.Item
@@ -111,6 +112,12 @@ export default function Register({ setModalOpen, modalOpen }) {
           ]}
         >
           <Input.Password prefix={<CheckOutlined />} placeholder="Confirm Password" />
+        </Form.Item>
+
+        <Form.Item style={{ margin: 0 }}>
+          <Button type="primary" htmlType="submit" shape="round" block>
+            建立
+          </Button>
         </Form.Item>
 
       </Form>
