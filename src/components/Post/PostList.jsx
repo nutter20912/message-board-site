@@ -5,46 +5,51 @@ import {
   UserOutlined,
 } from '@ant-design/icons';
 import { Avatar, Button, Card, Dropdown, message, Modal } from 'antd';
-import React from 'react';
+import React, { useState } from 'react';
 import { useAsyncValue, useNavigate } from 'react-router-dom';
 import { Post } from '../../api';
 import { storage } from '../../lib';
+import EditModal from './EditModal';
 
 /**
- * 貼文卡片元件
+ * 貼文卡片列表元件
  *
  * @returns {React.ReactElement}
  */
-export default function PostList({ handleOpen }) {
-  const { data } = useAsyncValue();
+export default function PostList() {
   const user = storage.get('user');
+  const { data } = useAsyncValue();
   const navigate = useNavigate();
 
-  const showDeleteConfirm = (postId) => {
-    Modal.confirm({
-      title: 'Are you sure delete this post?',
-      icon: <ExclamationCircleOutlined />,
-      okText: 'Yes',
-      okType: 'danger',
-      cancelText: 'No',
-      onOk: async () => {
-        await Post.delete({ id: postId });
-        message.info('刪除成功');
-        navigate('');
-      },
-    });
-  };
+  const [editOpen, setEditOpen] = useState(false);
+  const [targetId, setTargetId] = useState(false);
 
-  const getItems = (postId) => [
+  const getDropdownItems = (postId) => [
     {
       label: 'update',
       key: '0',
-      onClick: () => handleOpen(postId),
+      onClick: () => {
+        setEditOpen(true);
+        setTargetId(postId);
+      },
     },
     {
       label: 'delete',
       key: '1',
-      onClick: () => showDeleteConfirm(postId),
+      onClick: () => {
+        Modal.confirm({
+          title: 'Are you sure delete this post?',
+          icon: <ExclamationCircleOutlined />,
+          okText: 'Yes',
+          okType: 'danger',
+          cancelText: 'No',
+          onOk: async () => {
+            await Post.delete({ id: postId });
+            message.info('刪除成功');
+            navigate('');
+          },
+        });
+      },
     },
   ];
 
@@ -53,7 +58,7 @@ export default function PostList({ handleOpen }) {
       <Avatar icon={<UserOutlined />} />
       <span style={{ marginLeft: '10px' }}>{name}</span>
       <Dropdown
-        menu={{ items: getItems(postId) }}
+        menu={{ items: getDropdownItems(postId) }}
         trigger={['click']}
         placement="bottomRight"
         disabled={(userId !== user.id)}
@@ -67,19 +72,28 @@ export default function PostList({ handleOpen }) {
     </>
   );
 
-  return data?.map((post) => (
-    <Card
-      style={{ borderRadius: '10px', margin: '10px' }}
-      className="content-card"
-      bordered={false}
-      key={post.id}
-      title={getCardTitle(post)}
-      actions={[
-        <MessageOutlined key="comment" />,
-      ]}
-    >
-      <h3>{post.title}</h3>
-      {post.content}
-    </Card>
-  ));
+  return (
+    <>
+      <EditModal
+        open={editOpen}
+        setOpen={setEditOpen}
+        targetId={targetId}
+      />
+      {data?.map((post) => (
+        <Card
+          style={{ borderRadius: '10px', margin: '10px' }}
+          className="content-card"
+          bordered={false}
+          key={post.id}
+          title={getCardTitle(post)}
+          actions={[
+            <MessageOutlined key="comment" />,
+          ]}
+        >
+          <h3>{post.title}</h3>
+          {post.content}
+        </Card>
+      ))}
+    </>
+  );
 }

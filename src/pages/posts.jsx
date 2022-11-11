@@ -1,9 +1,9 @@
 import { Spin } from 'antd';
-import React, { Suspense, useState } from 'react';
+import React, { Suspense } from 'react';
 import { Await, useLoaderData } from 'react-router-dom';
 import { Post } from '../components';
 
-const { EditModal, PostList, TopCard } = Post;
+const { PostList, TopCard } = Post;
 
 /**
  * 文章頁面
@@ -13,13 +13,6 @@ const { EditModal, PostList, TopCard } = Post;
  */
 export default function Posts({ errorHandler: ErrorElement }) {
   const { reviews } = useLoaderData();
-  const [editOpen, setEditOpen] = useState(false);
-  const [targetId, setTargetId] = useState(false);
-
-  const handleOpen = (postId) => {
-    setEditOpen(true);
-    setTargetId(postId);
-  };
 
   return (
     <>
@@ -29,15 +22,9 @@ export default function Posts({ errorHandler: ErrorElement }) {
           resolve={reviews}
           errorElement={<ErrorElement />}
         >
-          <PostList handleOpen={handleOpen} />
+          <PostList />
         </Await>
       </Suspense>
-
-      <EditModal
-        open={editOpen}
-        setOpen={setEditOpen}
-        targetId={targetId}
-      />
     </>
   );
 }
