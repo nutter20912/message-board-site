@@ -1,7 +1,12 @@
-import { EllipsisOutlined, ExclamationCircleOutlined, MessageOutlined, UserOutlined } from '@ant-design/icons';
-import { Avatar, Button, Card, Dropdown, Modal } from 'antd';
+import {
+  EllipsisOutlined,
+  ExclamationCircleOutlined,
+  MessageOutlined,
+  UserOutlined,
+} from '@ant-design/icons';
+import { Avatar, Button, Card, Dropdown, message, Modal } from 'antd';
 import React from 'react';
-import { useAsyncValue } from 'react-router-dom';
+import { useAsyncValue, useNavigate } from 'react-router-dom';
 import { Post } from '../../api';
 import { storage } from '../../lib';
 
@@ -13,6 +18,7 @@ import { storage } from '../../lib';
 export default function PostList({ handleOpen }) {
   const { data } = useAsyncValue();
   const user = storage.get('user');
+  const navigate = useNavigate();
 
   const showDeleteConfirm = (postId) => {
     Modal.confirm({
@@ -21,8 +27,10 @@ export default function PostList({ handleOpen }) {
       okText: 'Yes',
       okType: 'danger',
       cancelText: 'No',
-      onOk() {
-        Post.delete({ id: postId });
+      onOk: async () => {
+        await Post.delete({ id: postId });
+        message.info('刪除成功');
+        navigate('');
       },
     });
   };

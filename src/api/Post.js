@@ -13,7 +13,7 @@ const Post = {
     content,
   }),
 
-  delete: ({ id }) => { console.log(id); },
+  delete: ({ id }) => request('delete', `api/posts/${id}`),
 };
 
 export default Post;

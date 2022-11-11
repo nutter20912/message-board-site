@@ -2,7 +2,7 @@ import { HomeOutlined, MessageOutlined, NotificationOutlined } from '@ant-design
 import React from 'react';
 import { createBrowserRouter, defer, redirect, RouterProvider } from 'react-router-dom';
 import { Post } from './api';
-import { ErrorHandler, isLogin } from './components/ErrorHandler';
+import { ErrorHandler, isLogin } from './components';
 import { BaseLayout, Login, Messages, Notifications, Posts, Register } from './pages';
 
 /**

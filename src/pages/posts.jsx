@@ -1,8 +1,9 @@
 import { Spin } from 'antd';
 import React, { Suspense, useState } from 'react';
 import { Await, useLoaderData } from 'react-router-dom';
-import EditModal from '../components/Post/EditModal';
-import PostList from '../components/Post/PostList';
+import { Post } from '../components';
+
+const { EditModal, PostList, TopCard } = Post;
 
 /**
  * 文章頁面
@@ -21,18 +22,22 @@ export default function Posts({ errorHandler: ErrorElement }) {
   };
 
   return (
-    <Suspense fallback={<Spin size="large" />}>
-      <Await
-        resolve={reviews}
-        errorElement={<ErrorElement />}
-      >
-        <PostList handleOpen={handleOpen} />
-      </Await>
+    <>
+      <TopCard />
+      <Suspense fallback={<Spin size="large" />}>
+        <Await
+          resolve={reviews}
+          errorElement={<ErrorElement />}
+        >
+          <PostList handleOpen={handleOpen} />
+        </Await>
+      </Suspense>
+
       <EditModal
         open={editOpen}
         setOpen={setEditOpen}
         targetId={targetId}
       />
-    </Suspense>
+    </>
   );
 }
