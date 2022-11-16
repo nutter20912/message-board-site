@@ -33,7 +33,7 @@ export default function EditModal({ open, setOpen, targetId }) {
    * 取得目標文章資訊
    */
   useEffect(() => {
-    if (targetId) {
+    if (open && targetId) {
       Post.show({ id: targetId })
         .then(({ result }) => {
           setContent(() => result.content);

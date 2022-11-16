@@ -1,6 +1,6 @@
 import { Spin } from 'antd';
 import React, { Suspense } from 'react';
-import { Await, useLoaderData } from 'react-router-dom';
+import { Await, Outlet, useLoaderData } from 'react-router-dom';
 import { Post } from '../components';
 
 const { PostList, TopCard } = Post;
@@ -23,6 +23,7 @@ export default function Posts({ errorHandler: ErrorElement }) {
           errorElement={<ErrorElement />}
         >
           <PostList />
+          <Outlet />
         </Await>
       </Suspense>
     </>

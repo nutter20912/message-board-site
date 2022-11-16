@@ -46,7 +46,7 @@ export default function PostList() {
           onOk: async () => {
             await Post.delete({ id: postId });
             message.info('刪除成功');
-            navigate('');
+            navigate('/');
           },
         });
       },
@@ -72,10 +72,6 @@ export default function PostList() {
     </>
   );
 
-  const hanndleCommentClick = (postId) => {
-    navigate(`/posts/${postId}`);
-  };
-
   return (
     <>
       <EditModal
@@ -91,7 +87,7 @@ export default function PostList() {
           key={post.id}
           title={getCardTitle(post)}
           actions={[
-            <MessageOutlined key="comment" />,
+            <MessageOutlined onClick={() => navigate(`/posts/${post.id}`)} />,
           ]}
         >
           <h3>{post.title}</h3>

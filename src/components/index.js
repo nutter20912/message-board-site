@@ -1,8 +1,9 @@
+import { BaseErrorElement, ErrorHandler, isLogin } from './ErrorHandler';
 import * as Post from './Post';
-import { ErrorHandler, isLogin } from './ErrorHandler';
 
 export {
-  Post,
+  BaseErrorElement,
   ErrorHandler,
   isLogin,
+  Post,
 };
