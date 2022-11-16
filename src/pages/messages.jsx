@@ -1,5 +1,10 @@
+import { List } from 'antd';
 import React from 'react';
 
 export default function Messages() {
-  return (<div>Messages</div>);
+  return (
+    <List
+      itemLayout="horizontal"
+    />
+  );
 }
