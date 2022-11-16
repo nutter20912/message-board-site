@@ -22,7 +22,7 @@ export function ErrorHandler() {
     if (isUnauthenticated()) {
       storage.reset('user');
       message.info('請重新登入');
-      navigate('login');
+      navigate('/login');
     }
   }, []);
 

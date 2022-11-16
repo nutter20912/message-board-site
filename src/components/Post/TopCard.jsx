@@ -45,7 +45,7 @@ export default function TopCard() {
       message.success('post success');
       setOpen(false);
       form.resetFields();
-      navigate('');
+      navigate('/');
     } catch ({ response: { data } }) {
       message.error(data.message);
     } finally {

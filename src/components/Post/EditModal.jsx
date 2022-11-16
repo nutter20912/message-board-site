@@ -20,7 +20,7 @@ export default function EditModal({ open, setOpen, targetId }) {
     try {
       setConfirmLoading(true);
       await Post.update({ id: targetId, content });
-      navigate('');
+      navigate('/');
     } catch (error) {
       message.error(error.message);
     } finally {

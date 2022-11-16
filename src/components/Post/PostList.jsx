@@ -72,6 +72,10 @@ export default function PostList() {
     </>
   );
 
+  const hanndleCommentClick = (postId) => {
+    navigate(`/posts/${postId}`);
+  };
+
   return (
     <>
       <EditModal
