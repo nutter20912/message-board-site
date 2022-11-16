@@ -45,6 +45,7 @@ export default function Router() {
       path: '/',
       element: <BaseLayout menuComponents={menuComponents} />,
       children: menuComponents,
+      errorElement: <BaseErrorElement />,
     },
     {
       path: 'login',

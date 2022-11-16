@@ -41,3 +41,27 @@ export const isLogin = () => {
 
   return user && Object.keys(user).length !== 0;
 };
+
+/**
+ * 錯誤處理元件
+ *
+ * @returns {React.ReactElement}
+ */
+export function BaseErrorElement() {
+  const navigate = useNavigate();
+
+  const onClick = () => {
+    storage.reset('user');
+    message.info('請重新登入');
+    navigate('/login');
+  };
+
+  return (
+    <Result
+      status="500"
+      title="500"
+      subTitle="Sorry, something went wrong."
+      extra={<Button type="primary" onClick={onClick}>Back Home</Button>}
+    />
+  );
+}
