@@ -121,7 +121,7 @@ export default function TopCard() {
           </Form.Item>
 
           <Form.Item style={{ margin: 0 }}>
-            <Button type="primary" htmlType="submit" shape="round" block>
+            <Button type="primary" htmlType="submit" block>
               發佈
             </Button>
           </Form.Item>

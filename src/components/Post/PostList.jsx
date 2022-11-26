@@ -81,9 +81,8 @@ export default function PostList() {
       />
       {data?.map((post) => (
         <Card
-          style={{ borderRadius: '10px', margin: '10px' }}
+          style={{ margin: '10px' }}
           className="content-card"
-          bordered={false}
           key={post.id}
           title={getCardTitle(post)}
           actions={[

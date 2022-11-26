@@ -1,3 +1,4 @@
+import { ConfigProvider } from 'antd';
 import React, { useEffect } from 'react';
 import { getCsrfCookie } from './api';
 import Router from './router';
@@ -13,7 +14,17 @@ export default function App() {
     getCsrfCookie();
   }, []);
 
+  const themeObject = {
+    components: {
+      Layout: {
+        colorBgHeader: 'white',
+      },
+    },
+  };
+
   return (
-    <Router />
+    <ConfigProvider theme={themeObject}>
+      <Router />
+    </ConfigProvider>
   );
 }

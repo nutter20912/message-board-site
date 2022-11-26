@@ -52,11 +52,11 @@ export default function EditModal({ open, setOpen, targetId }) {
     >
       <TextArea
         value={content}
-        bordered={false}
         onChange={(e) => setContent(e.target.value)}
         autoSize={{ minRows: 3, maxRows: 5 }}
         showCount
         maxLength={500}
+        style={{ marginBottom: '20px' }}
       />
     </Modal>
   );

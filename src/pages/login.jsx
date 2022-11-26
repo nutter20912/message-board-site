@@ -26,7 +26,7 @@ const LogoImage = styled.img`
   src: ${(props) => props.src};
   height: 50px;
   border-radius: 50%;
-  margin: 0 15px 15px 50px;
+  margin: 20px;
 `;
 
 const Content = styled.section`
@@ -116,7 +116,7 @@ export default function Login() {
           </Form.Item>
 
           <Form.Item>
-            <Button type="primary" htmlType="submit" shape="round" block>
+            <Button type="primary" htmlType="submit" block>
               login in
             </Button>
           </Form.Item>
@@ -124,7 +124,6 @@ export default function Login() {
         </Form>
         <Button
           type="primary"
-          shape="round"
           style={{ backgroundColor: 'forestgreen' }}
           onClick={showModal}
           block

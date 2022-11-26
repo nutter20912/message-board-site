@@ -4,7 +4,7 @@ import {
   ExclamationCircleOutlined,
   UserOutlined,
 } from '@ant-design/icons';
-import { Avatar, Button, Comment, Dropdown, List, message, Modal, Spin, Tooltip } from 'antd';
+import { Avatar, Button, Dropdown, List, message, Modal, Spin, Tooltip } from 'antd';
 import React, { useState } from 'react';
 import { useAsyncValue, useParams } from 'react-router-dom';
 import * as api from '../../api';
@@ -54,6 +54,22 @@ export default function CommentsBlock() {
     },
   ];
 
+  const firstItem = {
+    author: '',
+    datetime: '',
+    avatar: <Avatar icon={<UserOutlined />} />,
+    content: (
+      <Spin spinning={storeSpinning} wrapperClassName="comment-input-spin">
+        <CommentInput
+          targetId={postId}
+          setComments={setComments}
+          action="store"
+          setSpinning={setStoreSpinning}
+        />
+      </Spin>
+    ),
+  };
+
   const items = comments.reduce((pre, comment) => [
     ...pre,
     {
@@ -99,19 +115,7 @@ export default function CommentsBlock() {
         </Tooltip>
       ),
     },
-  ], [{
-    avatar: <Avatar icon={<UserOutlined />} />,
-    content: (
-      <Spin spinning={storeSpinning} wrapperClassName="comment-input-spin">
-        <CommentInput
-          targetId={postId}
-          setComments={setComments}
-          action="store"
-          setSpinning={setStoreSpinning}
-        />
-      </Spin>
-    ),
-  }]);
+  ], [firstItem]);
 
   return (
     <List
@@ -120,14 +124,14 @@ export default function CommentsBlock() {
       itemLayout="horizontal"
       dataSource={items}
       renderItem={(item) => (
-        <li>
-          <Comment
-            author={item.author}
+        <List.Item>
+          <List.Item.Meta
             avatar={item.avatar}
-            content={item.content}
-            datetime={item?.datetime}
+            title={item.author}
           />
-        </li>
+          <p>{item.content}</p>
+          {item.datetime}
+        </List.Item>
       )}
     />
   );

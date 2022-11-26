@@ -115,7 +115,7 @@ export default function Register({ setModalOpen, modalOpen }) {
         </Form.Item>
 
         <Form.Item style={{ margin: 0 }}>
-          <Button type="primary" htmlType="submit" shape="round" block>
+          <Button type="primary" htmlType="submit" block>
             建立
           </Button>
         </Form.Item>

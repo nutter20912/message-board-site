@@ -16,7 +16,6 @@ const TopHeader = styled(Header)`
   width: 100%;
   height: 70px;
   line-height: center;
-  background: white;
   border-bottom: solid LightGray;
   padding: 0;
 `;
@@ -33,7 +32,6 @@ const LeftSider = styled(Sider)`
   position: sticky;
   bottom: 0;
   overflow: auto;
-  background: white;
   left: 0;
   border-right: 3px LightGray solid;
 `;
