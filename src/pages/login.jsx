@@ -84,7 +84,7 @@ export default function Login() {
           onFinish={onFinish}
         >
           <Form.Item
-            name="email"
+            name="login.email"
             rules={[
               {
                 required: true,
@@ -100,7 +100,7 @@ export default function Login() {
           </Form.Item>
 
           <Form.Item
-            name="password"
+            name="login.password"
             rules={[
               {
                 required: true,
