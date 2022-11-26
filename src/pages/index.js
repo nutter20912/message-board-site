@@ -1,5 +1,5 @@
 export { default as BaseLayout } from './baseLayout';
 export { default as Login } from './login';
-export * as Messages from './messages';
-export { default as Notifications } from './notifications';
-export * as Posts from './posts';
+export { default as messages } from './messages';
+export { default as notifications } from './notifications';
+export { default as posts } from './posts';
