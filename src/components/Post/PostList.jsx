@@ -26,7 +26,7 @@ export default function PostList() {
 
   const getDropdownItems = (postId) => [
     {
-      label: 'update',
+      label: '編輯貼文',
       key: '0',
       onClick: () => {
         setEditOpen(true);
@@ -34,7 +34,7 @@ export default function PostList() {
       },
     },
     {
-      label: 'delete',
+      label: '刪除貼文',
       key: '1',
       onClick: () => {
         Modal.confirm({

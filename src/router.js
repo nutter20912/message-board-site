@@ -3,7 +3,7 @@ import React from 'react';
 import { createBrowserRouter, defer, redirect, RouterProvider } from 'react-router-dom';
 import * as api from './api';
 import { BaseErrorElement, ErrorHandler, isLogin } from './components';
-import { BaseLayout, Login, Messages, Notifications, Post, Posts } from './pages';
+import { BaseLayout, Login, Messages, Notifications, Posts } from './pages';
 
 /**
  * 路由元件
@@ -14,7 +14,7 @@ export default function Router() {
   const menuComponents = [
     {
       path: '/',
-      element: <Posts errorHandler={ErrorHandler} />,
+      element: <Posts.All errorHandler={ErrorHandler} />,
       description: '首頁',
       key: 'home',
       icon: <HomeOutlined />,
@@ -26,7 +26,7 @@ export default function Router() {
       children: [
         {
           path: '/posts/:postId',
-          element: <Post errorHandler={ErrorHandler} />,
+          element: <Posts.Show errorHandler={ErrorHandler} />,
           description: 'post',
           key: 'post',
           loader: async ({ params }) => {
@@ -40,7 +40,7 @@ export default function Router() {
     },
     {
       path: 'messages',
-      element: <Messages />,
+      element: <Messages.All />,
       description: '訊息',
       key: 'messages',
       icon: <MessageOutlined />,

@@ -129,7 +129,7 @@ export default function CommentsBlock() {
             avatar={item.avatar}
             title={item.author}
           />
-          <p>{item.content}</p>
+          {item.content}
           {item.datetime}
         </List.Item>
       )}

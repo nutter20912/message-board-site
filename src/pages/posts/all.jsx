@@ -1,7 +1,7 @@
 import { Spin } from 'antd';
 import React, { Suspense } from 'react';
 import { Await, Outlet, useLoaderData } from 'react-router-dom';
-import { Post } from '../components';
+import { Post } from '../../components';
 
 const { PostList, TopCard } = Post;
 
@@ -11,7 +11,7 @@ const { PostList, TopCard } = Post;
  * @param {ErrorElement} errorHandler
  * @returns {React.ReactElement}
  */
-export default function Posts({ errorHandler: ErrorElement }) {
+export default function All({ errorHandler: ErrorElement }) {
   const { reviews } = useLoaderData();
 
   return (

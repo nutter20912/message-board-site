@@ -1,7 +1,7 @@
 import { Divider, Modal, Spin } from 'antd';
 import React, { Suspense, useState } from 'react';
 import { Await, useLoaderData, useNavigate } from 'react-router-dom';
-import { Post as PostComponents } from '../components';
+import { Post as PostComponents } from '../../components';
 
 const { PostCard, CommentsBlock } = PostComponents;
 
@@ -10,7 +10,7 @@ const { PostCard, CommentsBlock } = PostComponents;
  *
  * @returns {React.ReactElement}
  */
-export default function Post({ errorHandler: ErrorElement }) {
+export default function Show({ errorHandler: ErrorElement }) {
   const { post, comments } = useLoaderData();
   const navigate = useNavigate();
   const [open, setOpen] = useState(true);

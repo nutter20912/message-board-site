@@ -66,7 +66,9 @@ export default function BaseLayout({ menuComponents }) {
   return (
     <Layout style={{ minHeight: '100vh' }}>
 
-      <LeftSider>
+      <LeftSider
+        breakpoint="md"
+      >
         <MenuLogo src={logo} size="large" />
         <Menu items={items} />
       </LeftSider>
@@ -83,7 +85,7 @@ export default function BaseLayout({ menuComponents }) {
           />
         </TopHeader>
 
-        <Content style={{ width: '70%' }}>
+        <Content style={{ width: '60%' }}>
           <Outlet />
         </Content>
 
