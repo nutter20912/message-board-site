@@ -3,7 +3,7 @@ import React from 'react';
 import { createBrowserRouter, defer, redirect, RouterProvider } from 'react-router-dom';
 import * as api from './api';
 import { BaseErrorElement, ErrorHandler, isLogin } from './components';
-import { BaseLayout, Login, Messages, Notifications, Post, Posts, Register } from './pages';
+import { BaseLayout, Login, Messages, Notifications, Post, Posts } from './pages';
 
 /**
  * 路由元件
@@ -64,11 +64,6 @@ export default function Router() {
     {
       path: 'login',
       element: <Login />,
-      loader: () => isLogin() && redirect('/'),
-    },
-    {
-      path: 'register',
-      element: <Register />,
       loader: () => isLogin() && redirect('/'),
     },
   ];
