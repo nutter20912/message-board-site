@@ -53,7 +53,7 @@ export default function Login() {
   const navigate = useNavigate();
 
   const onFinish = async () => {
-    const { email, password } = form.getFieldsValue(true);
+    const { login_email: email, login_password: password } = form.getFieldsValue(true);
 
     try {
       const { result: user } = await api.userLogin({ email, password });
@@ -84,7 +84,7 @@ export default function Login() {
           onFinish={onFinish}
         >
           <Form.Item
-            name="login.email"
+            name="login_email"
             rules={[
               {
                 required: true,
@@ -100,7 +100,7 @@ export default function Login() {
           </Form.Item>
 
           <Form.Item
-            name="login.password"
+            name="login_password"
             rules={[
               {
                 required: true,
