@@ -12,16 +12,14 @@ export default function PostCard() {
   const { result: post } = useAsyncValue();
 
   return (
-    <>
+    <Card bordered={false}>
       <Card.Meta
         avatar={<Avatar icon={<UserOutlined />} />}
         title={post.user.name}
         style={{ margin: '5px' }}
       />
-      <Card bordered={false}>
-        <h3>{post.title}</h3>
-        <p>{post.content}</p>
-      </Card>
-    </>
+      <h3>{post.title}</h3>
+      <p>{post.content}</p>
+    </Card>
   );
 }

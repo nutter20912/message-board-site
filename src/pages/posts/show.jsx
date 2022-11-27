@@ -1,4 +1,4 @@
-import { Divider, Modal, Spin } from 'antd';
+import { Modal, Spin } from 'antd';
 import React, { Suspense, useState } from 'react';
 import { Await, useLoaderData, useNavigate } from 'react-router-dom';
 import { Post as PostComponents } from '../../components';
@@ -34,8 +34,6 @@ export default function Show({ errorHandler: ErrorElement }) {
           <PostCard />
         </Await>
       </Suspense>
-
-      <Divider plain />
 
       <Suspense fallback={<Spin />}>
         <Await
