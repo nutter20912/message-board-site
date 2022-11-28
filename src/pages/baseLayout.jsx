@@ -85,7 +85,7 @@ export default function BaseLayout({ menuComponents }) {
           />
         </TopHeader>
 
-        <Content style={{ width: '60%' }}>
+        <Content>
           <Outlet />
         </Content>
 

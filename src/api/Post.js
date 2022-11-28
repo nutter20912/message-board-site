@@ -1,7 +1,7 @@
 import { request } from '../lib';
 
 const Post = {
-  getIndex: () => request('get', '/api/posts'),
+  getIndex: ({ page = 1 } = {}) => request('get', '/api/posts', { page }),
 
   store: ({ title, content }) => request('post', '/api/posts', {
     title, content,

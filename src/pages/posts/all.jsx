@@ -3,7 +3,7 @@ import React, { Suspense } from 'react';
 import { Await, Outlet, useLoaderData } from 'react-router-dom';
 import { Post } from '../../components';
 
-const { PostList, TopCard } = Post;
+const { PostList } = Post;
 
 /**
  * 文章頁面
@@ -15,8 +15,7 @@ export default function All({ errorHandler: ErrorElement }) {
   const { reviews } = useLoaderData();
 
   return (
-    <>
-      <TopCard />
+    <div style={{ width: '70vh' }}>
       <Suspense fallback={<Spin size="large" />}>
         <Await
           resolve={reviews}
@@ -26,6 +25,6 @@ export default function All({ errorHandler: ErrorElement }) {
           <Outlet />
         </Await>
       </Suspense>
-    </>
+    </div>
   );
 }
