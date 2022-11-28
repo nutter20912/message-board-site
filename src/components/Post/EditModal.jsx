@@ -1,7 +1,6 @@
 import { message, Modal } from 'antd';
 import TextArea from 'antd/lib/input/TextArea';
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { Post } from '../../api';
 
 /**
@@ -10,17 +9,19 @@ import { Post } from '../../api';
  * @param {boolean} open
  * @returns {React.ReactElement}
  */
-export default function EditModal({ open, setOpen, targetId }) {
+export default function EditModal({ open, setOpen, targetId, dispatch }) {
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [content, setContent] = useState('');
   const [title, setTitle] = useState('');
-  const navigate = useNavigate();
 
   const handleOk = async () => {
     try {
       setConfirmLoading(true);
-      await Post.update({ id: targetId, content });
-      navigate('/');
+      const params = { id: targetId, content };
+
+      await Post.update(params);
+
+      dispatch({ type: 'update', data: params });
     } catch (error) {
       message.error(error.message);
     } finally {

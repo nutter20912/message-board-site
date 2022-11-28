@@ -41,6 +41,14 @@ function reducer(state, { type, data }) {
         postSet: postSet.add(data.id),
       };
     }
+    case 'update': {
+      return {
+        ...state,
+        renderData: renderData.map(
+          (item) => (data.id === item.id ? { ...item, ...data } : item),
+        ),
+      };
+    }
     case 'load': {
       const appendData = data.filter(
         (item) => !postSet.has(item.id),
@@ -157,6 +165,7 @@ export default function PostList() {
         open={editOpen}
         setOpen={setEditOpen}
         targetId={targetId}
+        dispatch={dispatch}
       />
 
       <List
@@ -182,7 +191,6 @@ export default function PostList() {
                   <MessageOutlined onClick={() => navigate(`/posts/${post.id}`)} />,
                 ]}
               >
-                <p>{post.id}</p>
                 <h3>{post.title}</h3>
                 {post.content}
               </Card>
