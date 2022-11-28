@@ -2,7 +2,6 @@ import { UserOutlined } from '@ant-design/icons';
 import { Avatar, Button, Card, Form, Input, message, Modal } from 'antd';
 import TextArea from 'antd/lib/input/TextArea';
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { Post } from '../../api';
 import { storage } from '../../lib';
@@ -23,12 +22,11 @@ margin-left: 10px;
  *
  * @returns {React.ReactElement}
  */
-export default function TopCard() {
+export default function TopCard({ dispatch }) {
   const user = storage.get('user');
   const [form] = Form.useForm();
   const [open, setOpen] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
-  const navigate = useNavigate();
 
   const onCancel = () => {
     setOpen(false);
@@ -40,12 +38,12 @@ export default function TopCard() {
 
     try {
       const { title, content } = form.getFieldsValue(true);
-      await Post.store({ title, content });
+      const { result } = await Post.store({ title, content });
 
       message.success('post success');
+      dispatch({ type: 'add', data: result });
       setOpen(false);
       form.resetFields();
-      navigate('/');
     } catch ({ response: { data } }) {
       message.error(data.message);
     } finally {

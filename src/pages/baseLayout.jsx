@@ -9,9 +9,6 @@ import { storage } from '../lib';
 const { Content, Header, Sider } = Layout;
 
 const TopHeader = styled(Header)`
-  z-index: 2;
-  position: sticky;
-  top: 0;
   text-align: right;
   width: 100%;
   height: 70px;
@@ -28,11 +25,6 @@ const MenuLogo = styled(Avatar)`
   margin: 16px;
 `;
 const LeftSider = styled(Sider)`
-  z-index: 10;
-  position: sticky;
-  bottom: 0;
-  overflow: auto;
-  left: 0;
   border-right: 3px LightGray solid;
 `;
 
