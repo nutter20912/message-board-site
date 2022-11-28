@@ -167,11 +167,7 @@ export default function PostList() {
         itemHeight={itemHeight}
         itemKey="id"
         onScroll={onScroll}
-        style={{
-          border: '1px solid red',
-          boxSizing: 'border-box',
-          width: '50vw',
-        }}
+        style={{ width: '50vw' }}
       >
         {
           (post) => ((post.id === 0)
