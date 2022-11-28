@@ -11,7 +11,7 @@ import { storage } from '../../lib';
 export default function CommentInput({
   targetId,
   value = '',
-  setComments,
+  dispatch,
   action,
   setSpinning,
   onFinish,
@@ -25,30 +25,31 @@ export default function CommentInput({
         postId: id,
         content,
       });
-      setComments((pre) => [{
-        ...result,
-        user: {
-          id: user.id,
-          name: user.name,
+
+      dispatch({
+        type: 'add',
+        data: {
+          ...result,
+          user: {
+            id: user.id,
+            name: user.name,
+          },
         },
-      }, ...pre]);
+      });
       setInputValue('');
     }
 
     if (action === 'update') {
       const { result } = await api.Comment.update({ id, content });
 
-      setComments((pre) => pre.map(
-        (comment) => (
-          id === comment.id
-            ? {
-              ...comment,
-              content: result.content,
-              updated_at: result.updated_at,
-            }
-            : comment
-        ),
-      ));
+      dispatch({
+        type: 'update',
+        data: {
+          id,
+          content: result.content,
+          updated_at: result.updated_at,
+        },
+      });
     }
   };
 

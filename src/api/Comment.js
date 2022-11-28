@@ -1,7 +1,7 @@
 import { request } from '../lib';
 
 const Comment = {
-  all: ({ postId }) => request('get', `/api/posts/${postId}/comments`),
+  all: ({ postId, page = 1 }) => request('get', `/api/posts/${postId}/comments`, { page }),
 
   store: ({ postId, content }) => request('post', `/api/posts/${postId}/comments`, { content }),
 
