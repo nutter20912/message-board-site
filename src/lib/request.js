@@ -20,6 +20,7 @@ export default function request(method, url, payload) {
       }
 
       return axios({
+        headers: { 'X-Socket-ID': window.Echo?.socketId() },
         method,
         url,
         data: payload,
