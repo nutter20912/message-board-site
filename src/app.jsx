@@ -1,6 +1,5 @@
 import { ConfigProvider } from 'antd';
-import React, { useEffect } from 'react';
-import { getCsrfCookie } from './api';
+import React from 'react';
 import Router from './router';
 
 /**
@@ -9,11 +8,6 @@ import Router from './router';
  * @returns
  */
 export default function App() {
-  /** init csrf cookie */
-  useEffect(() => {
-    getCsrfCookie();
-  }, []);
-
   const themeObject = {
     components: {
       Layout: {

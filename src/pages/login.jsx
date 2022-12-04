@@ -1,12 +1,11 @@
 import { KeyOutlined, MailOutlined } from '@ant-design/icons';
 import { Button, Form, Input, message } from 'antd';
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import * as api from '../api';
 import background from '../images/background.jpeg';
 import logo from '../images/logo.png';
-import { storage } from '../lib';
+import { useAuthContext } from '../UserContext';
 import Register from './register';
 
 const LoginPage = styled.div`
@@ -50,7 +49,7 @@ const ContentTitle = styled.h2`
 export default function Login() {
   const [modalOpen, setModalOpen] = useState(false);
   const [form] = Form.useForm();
-  const navigate = useNavigate();
+  const { doLogin } = useAuthContext();
 
   const onFinish = async () => {
     const { login_email: email, login_password: password } = form.getFieldsValue(true);
@@ -58,9 +57,8 @@ export default function Login() {
     try {
       const { result: user } = await api.userLogin({ email, password });
 
-      storage.set('user', user);
+      doLogin(user);
       message.success('登入成功');
-      navigate('/');
     } catch ({ response: { data } }) {
       message.error(data.message);
     }

@@ -1,10 +1,10 @@
 import { ExclamationCircleOutlined, LogoutOutlined } from '@ant-design/icons';
 import { Avatar, Button, Layout, Menu, Modal } from 'antd';
 import React from 'react';
-import { Link, Outlet, useNavigate } from 'react-router-dom';
+import { Link, Outlet } from 'react-router-dom';
 import styled from 'styled-components';
 import logo from '../images/logo.png';
-import { storage } from '../lib';
+import { useAuthContext, useUserContext } from '../UserContext';
 
 const { Content, Header, Sider } = Layout;
 
@@ -34,7 +34,8 @@ const LeftSider = styled(Sider)`
  * @returns {React.ReactElement}
  */
 export default function BaseLayout({ menuComponents }) {
-  const navigate = useNavigate();
+  const user = useUserContext();
+  const { doLogout } = useAuthContext();
 
   const items = menuComponents?.map(({
     path, description, key, icon,
@@ -48,10 +49,7 @@ export default function BaseLayout({ menuComponents }) {
     Modal.confirm({
       icon: <ExclamationCircleOutlined />,
       content: '確定退出嗎?',
-      onOk() {
-        storage.reset('user');
-        navigate('/login');
-      },
+      onOk: () => doLogout(),
     });
   };
 
@@ -68,7 +66,7 @@ export default function BaseLayout({ menuComponents }) {
       <Layout>
 
         <TopHeader>
-          <HeaderText>{`welcome, ${storage.get('user')?.name}`}</HeaderText>
+          <HeaderText>{`welcome, ${user.name}`}</HeaderText>
           <Button
             icon={<LogoutOutlined />}
             type="link"

@@ -32,17 +32,6 @@ export function ErrorHandler() {
 }
 
 /**
- * 是否已登入
- *
- * @returns {boolean}
- */
-export const isLogin = () => {
-  const user = storage.get('user');
-
-  return user && Object.keys(user).length !== 0;
-};
-
-/**
  * 錯誤處理元件
  *
  * @returns {React.ReactElement}

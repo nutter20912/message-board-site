@@ -1,7 +1,10 @@
 import React from 'react';
-import { createBrowserRouter, redirect, RouterProvider } from 'react-router-dom';
-import { BaseErrorElement, isLogin } from './components';
+import { createBrowserRouter, Outlet, RouterProvider } from 'react-router-dom';
+import { getCsrfCookie } from './api';
+import { BaseErrorElement } from './components';
+import Authenticate from './components/Authenticate';
 import { BaseLayout, Login, messages, notifications, posts } from './pages';
+import { UserProvider } from './UserContext';
 
 /**
  * 路由元件
@@ -32,13 +35,24 @@ export default function Router() {
       errorElement: <BaseErrorElement />,
     },
     {
-      path: 'login',
+      path: '/login',
       element: <Login />,
-      loader: () => isLogin() && redirect('/'),
     },
   ];
 
+  const base = [{
+    element: (
+      <UserProvider>
+        <Authenticate>
+          <Outlet />
+        </Authenticate>
+      </UserProvider>
+    ),
+    children: routes,
+    loader: () => getCsrfCookie(),
+  }];
+
   return (
-    <RouterProvider router={createBrowserRouter(routes)} />
+    <RouterProvider router={createBrowserRouter(base)} />
   );
 }
