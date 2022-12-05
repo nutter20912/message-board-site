@@ -1,9 +1,11 @@
 import { ExclamationCircleOutlined, LogoutOutlined } from '@ant-design/icons';
-import { Avatar, Button, Layout, Menu, Modal } from 'antd';
-import React from 'react';
-import { Link, Outlet } from 'react-router-dom';
+import { Avatar, Button, Layout, Menu, message, Modal } from 'antd';
+import React, { useEffect } from 'react';
+import { Link, Outlet, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { useNotification } from '../components';
 import logo from '../images/logo.png';
+import { pusher } from '../lib';
 import { useAuthContext, useUserContext } from '../UserContext';
 
 const { Content, Header, Sider } = Layout;
@@ -36,6 +38,8 @@ const LeftSider = styled(Sider)`
 export default function BaseLayout({ menuComponents }) {
   const user = useUserContext();
   const { doLogout } = useAuthContext();
+  const navigate = useNavigate();
+  const notification = useNotification();
 
   const items = menuComponents?.map(({
     path, description, key, icon,
@@ -52,6 +56,23 @@ export default function BaseLayout({ menuComponents }) {
       onOk: () => doLogout(),
     });
   };
+
+  const openNotification = (model) => {
+    notification.info({
+      message: 'Notification',
+      description: `${model.user.name} 已評論 ${model.post.title}`,
+      onClick: () => navigate(`/posts/${model.post.id}`),
+    });
+  };
+
+  /** 使用者推播 */
+  useEffect(() => {
+    pusher().then((client) => {
+      client.private(`users.${user?.id}`)
+        .listen('.CommentCreated', ({ model }) => openNotification(model))
+        .error((error) => message.error(error));
+    });
+  }, []);
 
   return (
     <Layout style={{ minHeight: '100vh' }}>
