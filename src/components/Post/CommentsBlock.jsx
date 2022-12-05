@@ -9,7 +9,8 @@ import React, { useReducer, useState } from 'react';
 import { useAsyncValue, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import * as api from '../../api';
-import { datetime, storage } from '../../lib';
+import { datetime } from '../../lib';
+import { useUserContext } from '../../UserContext';
 import CommentInput from './CommentInput';
 
 const CommentAvatar = styled(Avatar)`
@@ -81,7 +82,7 @@ function reducer(state, { type, data }) {
  * @returns {React.ReactElement}
  */
 export default function CommentsBlock() {
-  const user = storage.get('user');
+  const user = useUserContext();
   const { data = [], paginator } = useAsyncValue();
 
   const [targetId, setTargetId] = useState(false);

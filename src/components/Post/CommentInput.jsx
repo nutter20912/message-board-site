@@ -1,7 +1,7 @@
 import { Input, message } from 'antd';
 import React, { useState } from 'react';
 import * as api from '../../api';
-import { storage } from '../../lib';
+import { useUserContext } from '../../UserContext';
 
 /**
  * 評論輸入框元件
@@ -16,7 +16,7 @@ export default function CommentInput({
   setSpinning,
   onFinish,
 }) {
-  const user = storage.get('user');
+  const user = useUserContext();
   const [inputValue, setInputValue] = useState(value);
 
   const handleComments = async ({ id, content }) => {

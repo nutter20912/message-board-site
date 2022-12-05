@@ -9,7 +9,7 @@ import List from 'rc-virtual-list';
 import React, { forwardRef, useEffect, useReducer, useRef, useState } from 'react';
 import { useAsyncValue, useNavigate } from 'react-router-dom';
 import { Post } from '../../api';
-import { storage } from '../../lib';
+import { useUserContext } from '../../UserContext';
 import EditModal from './EditModal';
 import TopCard from './TopCard';
 
@@ -73,7 +73,7 @@ function reducer(state, { type, data }) {
  * @returns {React.ReactElement}
  */
 export default function PostList() {
-  const user = storage.get('user');
+  const user = useUserContext();
   const { data, paginator } = useAsyncValue();
   const navigate = useNavigate();
   const listRef = useRef(null);

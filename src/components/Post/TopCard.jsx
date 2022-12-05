@@ -4,7 +4,7 @@ import TextArea from 'antd/lib/input/TextArea';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Post } from '../../api';
-import { storage } from '../../lib';
+import { useUserContext } from '../../UserContext';
 
 const PostButton = styled(Button)`
 background: #e7e7e7;
@@ -23,7 +23,7 @@ margin-left: 10px;
  * @returns {React.ReactElement}
  */
 export default function TopCard({ dispatch }) {
-  const user = storage.get('user');
+  const user = useUserContext();
   const [form] = Form.useForm();
   const [open, setOpen] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
@@ -54,7 +54,7 @@ export default function TopCard({ dispatch }) {
   const getTitle = () => (
     <>
       <Avatar>
-        {user.name[0].toUpperCase()}
+        {user?.name.substring(0, 1).toUpperCase()}
       </Avatar>
       <PostButton
         type="text"
