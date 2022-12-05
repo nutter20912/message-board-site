@@ -32,7 +32,6 @@ export default function Router() {
       path: '/',
       element: <BaseLayout menuComponents={menuComponents} />,
       children: menuComponents,
-      errorElement: <BaseErrorElement />,
     },
     {
       path: '/login',
@@ -49,6 +48,7 @@ export default function Router() {
       </UserProvider>
     ),
     children: routes,
+    errorElement: <BaseErrorElement />,
     loader: () => getCsrfCookie(),
   }];
 
