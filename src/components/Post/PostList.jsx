@@ -90,8 +90,8 @@ export default function PostList() {
     currentPage: paginator.current_page,
   });
 
-  const containerHeight = 600;
-  const itemHeight = 200;
+  const containerHeight = window.innerHeight - 65;
+  const itemHeight = window.innerHeight / 4;
 
   const onScroll = (e) => {
     if (currentPage === paginator.last_page) {
