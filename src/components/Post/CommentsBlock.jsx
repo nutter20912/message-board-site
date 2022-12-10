@@ -174,7 +174,7 @@ export default function CommentsBlock() {
       dataSource={renderData}
       renderItem={
         (item) => (item?.loading
-          ? <Skeleton avatar active style={{ width: '50vw', margin: '25px' }} />
+          ? <Skeleton avatar active style={{ width: '35vw', margin: '25px' }} />
           : (
             <List.Item actions={[getExtra(item)]}>
               <div>
@@ -190,7 +190,7 @@ export default function CommentsBlock() {
                     background: 'rgb(239, 242, 245)',
                     borderRadius: '5px',
                     padding: '5px',
-                    width: '50vh',
+                    width: 'calc(45vw - 100px)',
                   }}
                 >
                   <div>

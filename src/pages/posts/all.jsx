@@ -15,16 +15,14 @@ export default function All({ errorHandler: ErrorElement }) {
   const { reviews } = useLoaderData();
 
   return (
-    <div style={{ width: '70vh' }}>
-      <Suspense fallback={<Spin size="large" />}>
-        <Await
-          resolve={reviews}
-          errorElement={<ErrorElement />}
-        >
-          <PostList />
-          <Outlet />
-        </Await>
-      </Suspense>
-    </div>
+    <Suspense fallback={<Spin size="large" />}>
+      <Await
+        resolve={reviews}
+        errorElement={<ErrorElement />}
+      >
+        <PostList />
+        <Outlet />
+      </Await>
+    </Suspense>
   );
 }

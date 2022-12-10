@@ -75,7 +75,7 @@ export default function CommentInput({
       value={inputValue}
       onChange={(e) => setInputValue(e.target.value)}
       onPressEnter={onPressEnter}
-      style={{ borderRadius: '10px', width: '40vh' }}
+      style={{ borderRadius: '10px', width: 'calc(43vw - 100px)' }}
     />
   );
 }

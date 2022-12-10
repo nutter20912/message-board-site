@@ -9,7 +9,7 @@ import { useUserContext } from '../../UserContext';
 const PostButton = styled(Button)`
 background: #e7e7e7;
 color: #555555;
-width: 80%;
+width: calc(100% - 80px);
 border-radius: 10px;
 margin-left: 10px;
 &:hover {

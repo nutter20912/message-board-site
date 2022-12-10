@@ -25,6 +25,7 @@ export default function Show({ errorHandler: ErrorElement }) {
       open={open}
       footer={false}
       onCancel={onCancel}
+      width="50vw"
     >
       <Suspense fallback={<Spin />}>
         <Await
