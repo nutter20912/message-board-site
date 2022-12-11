@@ -3,9 +3,9 @@ import Echo from 'laravel-echo';
 window.Pusher = require('pusher-js');
 
 window.Echo = new Echo({
-  broadcaster: 'pusher',
-  key: '8468066f09dcfa2c3af5',
-  cluster: 'ap3',
+  broadcaster: process.env.REACT_APP_PUSHER_BROADCASTER || '',
+  key: process.env.REACT_APP_PUSHER_KEY || '',
+  cluster: process.env.REACT_APP_PUSHER_CLUSTER || '',
   forceTLS: true,
 });
 
