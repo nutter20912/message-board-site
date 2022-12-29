@@ -20,6 +20,29 @@ function reducer(state, { type, data }) {
         currentPage: currentPage + 1,
       };
     }
+    case 'add': {
+      renderData.unshift(data);
+
+      return {
+        ...state,
+        set: set.add(data.id),
+      };
+    }
+    case 'delete': {
+      return {
+        ...state,
+        renderData: renderData.filter((item) => (data.id !== item.id)),
+        set: set.delete(data.id),
+      };
+    }
+    case 'update': {
+      return {
+        ...state,
+        renderData: renderData.map(
+          (item) => (data.id === item.id ? { ...item, ...data } : item),
+        ),
+      };
+    }
     case 'load': {
       const appendData = data.filter(
         (item) => !set.has(item.id),

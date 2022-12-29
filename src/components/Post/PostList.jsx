@@ -5,105 +5,25 @@ import {
   UserOutlined,
 } from '@ant-design/icons';
 import { Avatar, Button, Card, Dropdown, message, Modal } from 'antd';
-import List from 'rc-virtual-list';
-import React, { forwardRef, useEffect, useReducer, useRef, useState } from 'react';
+import VirtualList from 'rc-virtual-list';
+import React, { useRef, useState } from 'react';
 import { useAsyncValue, useNavigate } from 'react-router-dom';
 import { Post } from '../../api';
 import { useUserContext } from '../../UserContext';
 import EditModal from './EditModal';
 import TopCard from './TopCard';
-
-const ForwardTopCard = forwardRef((...args) => TopCard(...args));
-
-/**
- * 虛擬列表分頁器
- * @param {state.postSet} postSet id 收集器
- * @param {state.renderData} renderData 渲染資料
- * @param {action.type} type 動作類型
- * @param {action.data} data 資料
- * @returns
- */
-function reducer(state, { type, data }) {
-  const { currentPage, renderData, postSet } = state;
-
-  switch (type) {
-    case 'next': {
-      return {
-        ...state,
-        currentPage: currentPage + 1,
-      };
-    }
-    case 'add': {
-      renderData.unshift(renderData.shift(), data);
-
-      return {
-        ...state,
-        postSet: postSet.add(data.id),
-      };
-    }
-    case 'update': {
-      return {
-        ...state,
-        renderData: renderData.map(
-          (item) => (data.id === item.id ? { ...item, ...data } : item),
-        ),
-      };
-    }
-    case 'load': {
-      const appendData = data.filter(
-        (item) => !postSet.has(item.id),
-      );
-
-      appendData.forEach((item) => postSet.add(item.id));
-
-      return {
-        ...state,
-        renderData: renderData.concat(appendData),
-      };
-    }
-    default: {
-      throw new Error();
-    }
-  }
-}
+import useVirtualList from '../useVirtualList';
 
 /**
- * 貼文卡片列表元件
+ * 卡片元件
  *
  * @returns {React.ReactElement}
  */
-export default function PostList() {
+function ListItemCard({ item, setTargetId, setEditOpen, dispatch }) {
   const user = useUserContext();
-  const { data, paginator } = useAsyncValue();
   const navigate = useNavigate();
-  const listRef = useRef(null);
 
-  const [editOpen, setEditOpen] = useState(false);
-  const [targetId, setTargetId] = useState(false);
-
-  const [{ renderData, currentPage }, dispatch] = useReducer(reducer, {
-    renderData: [
-      { id: 0 }, // TopCard Component
-      ...data,
-    ],
-    postSet: new Set(data.map((post) => post.id)),
-    currentPage: paginator.current_page,
-  });
-
-  const containerHeight = window.innerHeight - 65;
-  const itemHeight = window.innerHeight / 4;
-
-  const onScroll = (e) => {
-    if (currentPage === paginator.last_page) {
-      return;
-    }
-
-    if (containerHeight === (e.currentTarget.scrollHeight - e.currentTarget.scrollTop)) {
-      dispatch({ type: 'next' });
-    }
-  };
-
-  const getDropdownItems = (postId) => [
+  const getHeaderDropdownItems = (postId) => [
     {
       label: '編輯貼文',
       key: '0',
@@ -123,21 +43,25 @@ export default function PostList() {
           okType: 'danger',
           cancelText: 'No',
           onOk: async () => {
-            await Post.delete({ id: postId });
-            message.info('刪除成功');
-            navigate('/');
+            try {
+              await Post.delete({ id: postId });
+              dispatch({ type: 'delete', data: { id: postId } });
+              message.info('刪除成功');
+            } catch (error) {
+              message.error(error.message);
+            }
           },
         });
       },
     },
   ];
 
-  const getCardTitle = ({ id: postId, user: { id: userId, name } }) => (
+  const getTitle = ({ id: postId, user: { id: userId, name } }) => (
     <>
       <Avatar icon={<UserOutlined />} />
       <span style={{ marginLeft: '10px' }}>{name}</span>
       <Dropdown
-        menu={{ items: getDropdownItems(postId) }}
+        menu={{ items: getHeaderDropdownItems(postId) }}
         trigger={['click']}
         placement="bottomRight"
         disabled={(userId !== user.id)}
@@ -151,13 +75,53 @@ export default function PostList() {
     </>
   );
 
-  /** 載入分頁資料 */
-  useEffect(() => {
-    if (currentPage !== 1) {
-      Post.getIndex({ page: currentPage })
-        .then((res) => dispatch({ type: 'load', data: res.data }));
-    }
-  }, [currentPage]);
+  return (
+    <Card
+      style={{ margin: '10px' }}
+      className="content-card"
+      key={item.id}
+      title={getTitle(item)}
+      actions={[
+        <MessageOutlined onClick={() => navigate(`/posts/${item.id}`)} />,
+      ]}
+    >
+      <h3>{item.title}</h3>
+      {item.content}
+    </Card>
+  );
+}
+
+/**
+ * 貼文卡片列表元件
+ *
+ * @returns {React.ReactElement}
+ */
+export default function PostList() {
+  const result = useAsyncValue();
+  const listRef = useRef(null);
+
+  const [editOpen, setEditOpen] = useState(false);
+  const [targetId, setTargetId] = useState(false);
+
+  const {
+    state,
+    dispatch,
+    onScroll,
+    containerHeight,
+    itemHeight,
+  } = useVirtualList(result, 0.38, Post.getIndex);
+
+  const getListItem = (item, index) => (
+    <>
+      {index === 0 && <TopCard dispatch={dispatch} />}
+      <ListItemCard
+        item={item}
+        setTargetId={setTargetId}
+        setEditOpen={setEditOpen}
+        dispatch={dispatch}
+      />
+    </>
+  );
 
   return (
     <>
@@ -167,37 +131,18 @@ export default function PostList() {
         targetId={targetId}
         dispatch={dispatch}
       />
-
-      <List
+      <VirtualList
         id="list"
         ref={listRef}
-        data={renderData}
+        data={state.renderData}
         height={containerHeight}
         itemHeight={itemHeight}
         itemKey="id"
         onScroll={onScroll}
         style={{ width: '50vw' }}
       >
-        {
-          (post) => ((post.id === 0)
-            ? <ForwardTopCard dispatch={dispatch} />
-            : (
-              <Card
-                style={{ margin: '10px' }}
-                className="content-card"
-                key={post.id}
-                title={getCardTitle(post)}
-                actions={[
-                  <MessageOutlined onClick={() => navigate(`/posts/${post.id}`)} />,
-                ]}
-              >
-                <h3>{post.title}</h3>
-                {post.content}
-              </Card>
-            ))
-        }
-
-      </List>
+        {(item, index) => getListItem(item, index)}
+      </VirtualList>
     </>
   );
 }
