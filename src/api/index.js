@@ -1,6 +1,7 @@
 import { request } from '../lib';
 
 export { default as Comment } from './Comment';
+export { default as Notification } from './Notification';
 export { default as Post } from './Post';
 
 export const getCsrfCookie = () => request('get', '/api/auth/csrf-cookie');
