@@ -1,7 +1,7 @@
 import { CheckOutlined, KeyOutlined, MailOutlined, UserOutlined } from '@ant-design/icons';
-import { Button, Form, Input, message, Modal } from 'antd';
+import { Button, Form, Input, Modal, message } from 'antd';
 import React, { useState } from 'react';
-import { userRegister } from '../api';
+import { User } from '../api';
 
 /**
  * 註冊元件
@@ -22,7 +22,7 @@ export default function Register({ setModalOpen, modalOpen }) {
 
     try {
       const { name, email, password } = form.getFieldsValue(true);
-      const { result: user } = await userRegister({ name, email, password });
+      const { result: user } = await User.store({ name, email, password });
 
       setModalOpen(false);
       form.resetFields();
