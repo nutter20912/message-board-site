@@ -20,6 +20,22 @@ const NotificationItem = styled(List.Item)`
 }
 `;
 
+function NotificationModal({ open, setOpen }) {
+  const onCancel = () => {
+    setOpen(false);
+  };
+
+  return (
+    <Modal
+      open={open}
+      footer={null}
+      onCancel={onCancel}
+    >
+      <p>Some contents...</p>
+    </Modal>
+  );
+}
+
 /**
  * 可通知物件內容
  *
@@ -33,20 +49,22 @@ function Content({ targetId }) {
 
   useEffect(() => {
     Notification.show({ id: targetId })
-      .then(({ result: { notifiable } }) => {
-        setItem(notifiable);
+      .then(({ result }) => {
+        setItem(result);
         setLoading(false);
+        console.log(result);
       })
       .catch((e) => message.error(e.message));
   }, []);
 
   return (
     <Spin spinning={loading}>
-      {!loading && (
+      {!loading && item.notifiable_type === 'UserLoginRecord' && (
         <>
-          <p>{`IP位置: ${item.ip}`}</p>
-          <p>{`使用者裝置: ${item.user_agent}`}</p>
-          <p>{`登入時間: ${item.request_time}`}</p>
+          <h3>新登入警示</h3>
+          <p>{`IP位置: ${item.notifiable.ip}`}</p>
+          <p>{`使用者裝置: ${item.notifiable.user_agent}`}</p>
+          <p>{`登入時間: ${item.notifiable.request_time}`}</p>
         </>
       )}
     </Spin>
@@ -61,6 +79,7 @@ function Content({ targetId }) {
 export default function NotificationList() {
   const result = useAsyncValue();
   const listRef = useRef(null);
+  const [open, setOpen] = useState(false);
   const {
     state,
     onScroll,
@@ -70,42 +89,46 @@ export default function NotificationList() {
 
   const onClick = (targetId) => {
     Modal.info({
-      title: '新登入警示',
       content: <Content targetId={targetId} />,
+      closable: true,
+      okButtonProps: { style: { display: 'none' } },
     });
   };
 
   return (
-    <List
-      size="large"
-      style={{
-        width: '50vw',
-        background: 'white',
-      }}
-    >
-      <VirtualList
-        id="list"
-        ref={listRef}
-        data={state.renderData}
-        height={containerHeight}
-        itemHeight={itemHeight}
-        itemKey="id"
-        onScroll={onScroll}
+    <>
+      <NotificationModal open={open} setOpen={setOpen} />
+      <List
+        size="large"
+        style={{
+          width: '50vw',
+          background: 'white',
+        }}
       >
-        {
-          (item) => (
-            <NotificationItem
-              onClick={() => onClick(item.id)}
-            >
-              <List.Item.Meta
-                avatar={<Avatar icon={<AlertOutlined />} />}
-                title={<div>{item.created_at}</div>}
-                description={<div>{item.content}</div>}
-              />
-            </NotificationItem>
-          )
-        }
-      </VirtualList>
-    </List>
+        <VirtualList
+          id="list"
+          ref={listRef}
+          data={state.renderData}
+          height={containerHeight}
+          itemHeight={itemHeight}
+          itemKey="id"
+          onScroll={onScroll}
+        >
+          {
+            (item) => (
+              <NotificationItem
+                onClick={() => onClick(item.id)}
+              >
+                <List.Item.Meta
+                  avatar={<Avatar icon={<AlertOutlined />} />}
+                  title={<div>{item.created_at}</div>}
+                  description={<div>{item.content}</div>}
+                />
+              </NotificationItem>
+            )
+          }
+        </VirtualList>
+      </List>
+    </>
   );
 }
