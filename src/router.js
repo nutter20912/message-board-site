@@ -1,6 +1,5 @@
 import React from 'react';
 import { createBrowserRouter, Outlet, RouterProvider } from 'react-router-dom';
-import { getCsrfCookie } from './api';
 import { BaseErrorElement } from './components';
 import Authenticate from './components/Authenticate';
 import { BaseLayout, Login, messages, notifications, posts } from './pages';
@@ -49,7 +48,6 @@ export default function Router() {
     ),
     children: routes,
     errorElement: <BaseErrorElement />,
-    loader: () => getCsrfCookie(),
   }];
 
   return (

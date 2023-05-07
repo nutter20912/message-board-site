@@ -12,11 +12,12 @@ import { storage } from './lib';
 const userReducer = (state, { type, payload }) => {
   switch (type) {
     case 'login': {
-      storage.set('user', payload);
+      storage.set('user', payload.user);
+      storage.set('token', payload.token);
 
       return {
         ...state,
-        ...payload,
+        ...payload.user,
       };
     }
     case 'logout': {
