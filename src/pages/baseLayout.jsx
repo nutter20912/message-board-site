@@ -75,13 +75,17 @@ export default function BaseLayout({ menuComponents }) {
 
   /** 使用者推播 */
   useEffect(() => {
-    pusher().then((client) => {
-      client.private(`users.${user?.id}`)
-        .listen('.CommentCreated', ({ model }) => openNotification(model))
-        .listen('UserRelationshipCreated', (payload) => handleUserRelationshipCreated(payload))
-        .listen('RelationshipConfirmed', (payload) => console.log(payload))
-        .error((error) => message.error(error));
-    });
+    const test = () => {
+      pusher().then((client) => {
+        client.private(`users.${user?.id}`)
+          .listen('.CommentCreated', ({ model }) => openNotification(model))
+          .listen('UserRelationshipCreated', (payload) => handleUserRelationshipCreated(payload))
+          .listen('RelationshipConfirmed', (payload) => console.log(payload))
+          .error((error) => message.error(error));
+      });
+    };
+
+    console.log(test);
   }, []);
 
   return (
