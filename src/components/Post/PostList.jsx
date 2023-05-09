@@ -31,7 +31,7 @@ export default function PostList() {
 
   const getListItem = (item, index) => (
     <>
-      {index === 0 && <TopCard dispatch={dispatch} />}
+      {index === 0 && <TopCard key="top-card" dispatch={dispatch} />}
       <PostListItem
         item={item}
         setTargetId={setTargetId}
@@ -45,8 +45,8 @@ export default function PostList() {
   return (
     <div style={{ width: '50vw' }}>
       {renderData.length === 0 && ([
-        <TopCard dispatch={dispatch} />,
-        <Empty />,
+        <TopCard key="top-card" dispatch={dispatch} />,
+        <Empty key="empty" />,
       ])}
       <EditModal
         open={editOpen}
