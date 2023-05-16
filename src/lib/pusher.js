@@ -1,16 +1,21 @@
 import Echo from 'laravel-echo';
+import storage from './storage';
 
 window.Pusher = require('pusher-js');
+
+const token = storage.get('token') ?? '';
 
 window.Echo = new Echo({
   broadcaster: process.env.REACT_APP_PUSHER_BROADCASTER || '',
   key: process.env.REACT_APP_PUSHER_KEY || '',
-  cluster: process.env.REACT_APP_PUSHER_CLUSTER || '',
-  // forceTLS: true,
   wsHost: window.location.hostname,
-  wsPort: 6001,
+  wsPort: process.env.REACT_APP_PUSHER_PORT || 6001,
   forceTLS: false,
   disableStats: true,
+  enabledTransports: ['ws', 'wss'],
+  auth: {
+    headers: { Authorization: `Bearer ${token}` },
+  },
 });
 
 export default window.Echo;
