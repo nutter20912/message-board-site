@@ -8,7 +8,7 @@ const token = storage.get('token') ?? '';
 window.Echo = new Echo({
   broadcaster: process.env.REACT_APP_PUSHER_BROADCASTER || '',
   key: process.env.REACT_APP_PUSHER_KEY || '',
-  wsHost: window.location.hostname,
+  wsHost: '127.0.0.1',
   wsPort: process.env.REACT_APP_PUSHER_PORT || 6001,
   forceTLS: false,
   disableStats: true,
